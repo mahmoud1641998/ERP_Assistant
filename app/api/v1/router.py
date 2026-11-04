@@ -1,5 +1,6 @@
 from fastapi import APIRouter
-from app.api.v1.endpoints import health, models
+from app.api.v1.endpoints import health, models , schema
+
 
 api_router = APIRouter()
 
@@ -12,3 +13,9 @@ api_router.include_router(
     models.router,
     prefix="/api/v1",
     tags=["Ollama"])
+
+api_router.include_router(
+    schema.router,
+    prefix="/api/v1",
+    tags=["Database Schema"]
+)

@@ -6,7 +6,8 @@ from app.api.v1.endpoints import (
     schema,
     sql,
     assistant,
-    conversations
+    conversations,
+    conversation_assistant
 )
 
 
@@ -46,4 +47,10 @@ api_router.include_router(
     conversations.router,
     prefix="/api/v1/conversations",
     tags=["Conversations"]
+)
+
+api_router.include_router(
+    conversation_assistant.router,
+    prefix="/api/v1/conversation-assistant",
+    tags=["Conversation Assistant"]
 )

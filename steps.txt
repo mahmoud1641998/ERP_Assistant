@@ -96,3 +96,27 @@ All Registered API Routes:
 {'GET'} /{conversation_id}/messages
 {'POST'} /{conversation_id}/messages
 >>> 
+
+
+----
+3. شكل المشروع مستقبلًا after conversation setups
+هنحافظ على تنظيم الـ API بالشكل ده:
+/api/v1/assistant/ask
+
+/api/v1/conversations/
+
+/api/v1/conversations/{id}
+
+/api/v1/conversations/{id}/messages
+
+/api/v1/conversations/{id}/messages
+
+----
+Component	                    المسؤولية
+SQLAssistantService	ا     لـ Quick Assistant الحالي
+ConversationService	    إنشاء المحادثات وحفظ واسترجاع الرسائل
+ConversationAssistantService	إدارة دورة المحادثة
+SQLGenerationService	        توليد SQL
+AnswerGenerationService	    صياغة الإجابة
+OllamaService	            التواصل مع الـ LLM
+-------

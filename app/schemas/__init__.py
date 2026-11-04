@@ -8,10 +8,17 @@ from app.schemas.conversation_message import (
     ConversationMessageResponse
 )
 
+from app.schemas.conversation_assistant import (
+    ConversationAssistantRequest,
+    ConversationAssistantResponse
+)
+
 
 __all__ = [
     "ConversationCreate",
     "ConversationResponse",
     "ConversationMessageCreate",
-    "ConversationMessageResponse"
+    "ConversationMessageResponse",
+    "ConversationAssistantRequest",
+    "ConversationAssistantResponse"
 ]

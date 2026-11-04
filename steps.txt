@@ -66,3 +66,33 @@ routs :
     /api/v1/schema ['get']
     /api/v1/sql/generate ['post']
     /assistant/ask ['post']
+
+
+-----
+add conv:
+    app/
+    ├── api/
+    │   └── v1/
+    │       └── endpoints/
+    │           └── conversations.py
+    ├── schemas/
+    │   └── conversation.py
+    └── services/
+        └── conversation_service.py
+----
+All Registered API Routes:
+
+{'GET'} /
+{'GET'} /health
+{'GET'} /database
+{'GET'} /ollama/status
+{'GET'} /ollama/models
+{'POST'} /ollama/generate
+{'GET'} /schema
+{'POST'} /generate
+{'POST'} /ask
+{'POST'} /
+{'GET'} /{conversation_id}
+{'GET'} /{conversation_id}/messages
+{'POST'} /{conversation_id}/messages
+>>> 

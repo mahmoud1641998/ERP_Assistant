@@ -14,6 +14,7 @@ class SQLExecutionService:
         if not validation_result["valid"]:
             return {
                 "success": False,
+                "error_type": "validation_error",
                 "message": validation_result["message"],
                 "data": []
             }
@@ -38,6 +39,7 @@ class SQLExecutionService:
 
                 return {
                     "success": True,
+                    "error_type": None,
                     "message": "Query executed successfully.",
                     "row_count": len(data),
                     "data": data
@@ -46,6 +48,7 @@ class SQLExecutionService:
         except Exception:
             return {
                 "success": False,
+                "error_type": "execution_error",
                 "message": "Database query execution failed.",
                 "data": []
             }

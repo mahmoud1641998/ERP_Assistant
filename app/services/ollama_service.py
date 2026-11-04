@@ -40,7 +40,12 @@ class OllamaService:
         except Exception as e:
             raise Exception(f"Failed to retrieve models: {str(e)}")
 
-    def generate_response(self, prompt: str, model: str):
+    def generate_response(
+        self,
+        prompt: str,
+        model: str,
+        num_predict: int = 200
+    ):
 
         try:
             response = self.client.generate(
@@ -48,14 +53,14 @@ class OllamaService:
                 prompt=prompt,
                 stream=False,
                 options={
-                        "num_predict": 200,
-                        "temperature": 0.1,
-                        }
+                    "num_predict": num_predict,
+                    "temperature": 0.1,
+                }
             )
 
             return {
-            "model": model,
-            "response": response.response
+                "model": model,
+                "response": response.response
             }
 
         except Exception as e:

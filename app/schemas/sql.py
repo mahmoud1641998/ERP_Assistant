@@ -26,6 +26,7 @@ class SQLAssistantRequest(BaseModel):
 
 class SQLAssistantResponse(BaseModel):
     success: bool
+    error_type: str | None = None
     question: str
     generated_sql: str | None = None
     message: str

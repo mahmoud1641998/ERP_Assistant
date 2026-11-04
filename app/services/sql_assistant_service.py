@@ -4,6 +4,7 @@ from app.services.answer_generation_service import AnswerGenerationService
 
 
 class SQLAssistantService:
+
     def __init__(self):
         self.sql_generation_service = SQLGenerationService()
         self.sql_execution_service = SQLExecutionService()
@@ -12,16 +13,21 @@ class SQLAssistantService:
     def ask(self, user_question: str) -> dict:
 
         # Step 1: Generate SQL
-        generation_result = self.sql_generation_service.generate_sql(user_question)
+        generation_result = self.sql_generation_service.generate_sql(
+            user_question
+        )
 
         generated_sql = generation_result["sql"]
 
-        # Step 2: Execute SQL (includes validation)
-        execution_result = self.sql_execution_service.execute_query(generated_sql)
+        # Step 2: Validate and Execute SQL
+        execution_result = self.sql_execution_service.execute_query(
+            generated_sql
+        )
 
         if not execution_result["success"]:
             return {
                 "success": False,
+                "error_type": execution_result["error_type"],
                 "question": user_question,
                 "generated_sql": generated_sql,
                 "message": execution_result["message"],
@@ -45,6 +51,7 @@ class SQLAssistantService:
         except Exception:
             return {
                 "success": False,
+                "error_type": "answer_generation_error",
                 "question": user_question,
                 "generated_sql": generated_sql,
                 "message": "Query executed successfully, but answer generation failed.",
@@ -57,6 +64,7 @@ class SQLAssistantService:
         # Step 4: Return final response
         return {
             "success": True,
+            "error_type": None,
             "question": user_question,
             "generated_sql": generated_sql,
             "message": execution_result["message"],

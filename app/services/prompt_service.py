@@ -21,8 +21,12 @@ RULES:
 3. Do not generate INSERT, UPDATE, DELETE, DROP, ALTER, or CREATE statements.
 4. Do not invent table names or column names.
 5. Use JOINs when data from multiple related tables is needed.
-6. Return only the SQL query.
-7. Do not include explanations or Markdown code blocks.
+6. When the user asks to show, list, or retrieve records of an entity, select all relevant basic columns available for that entity, not just its name.
+7. For customer queries, include customer_id, customer_name, email, phone, and city whenever these columns exist in the schema.
+8. Select only columns relevant to the user's question and avoid unnecessary columns.
+9. Use clear column aliases when needed.
+10. Return only the SQL query.
+11. Do not include explanations or Markdown code blocks.
 
 USER QUESTION:
 {user_question}

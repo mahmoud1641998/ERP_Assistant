@@ -10,10 +10,12 @@ initial schema  :
     │   ├── api/
     │   │   ├── __init__.py
     │   │   └── v1/
+                    --> router.py
     │   │       ├── __init__.py
+                    
     │   │       └── endpoints/
     │   │           └── __init__.py
-    │   │
+    │   │               --> health.py    
     │   ├── core/
     │   │   └── __init__.py
     │   │
@@ -28,3 +30,26 @@ initial schema  :
     ├── README.md
     ├── LICENSE
     └── requirements.txt
+
+
+ollama config for first calling qwen
+
+.env and db conn and core.config for validate data base conn 
+
+
+----
+
+FastAPI
+│
+├── /api/v1/schema
+│
+├── /api/v1/sql/generate
+│   ├── SQLGenerationService
+│   └── SQLValidationService
+│
+└── /api/v1/assistant/ask
+    └── SQLAssistantService
+        ├── SQLGenerationService
+        ├── SQLExecutionService
+        │   └── SQLValidationService
+        └── AnswerGenerationService

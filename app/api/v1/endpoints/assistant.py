@@ -31,3 +31,4 @@ def ask_assistant(request: SQLAssistantRequest):
             status_code=500,
             detail=f"Assistant request failed: {str(e)}"
         )
+    

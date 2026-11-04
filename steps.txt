@@ -53,3 +53,16 @@ FastAPI
         ├── SQLExecutionService
         │   └── SQLValidationService
         └── AnswerGenerationService
+
+
+----
+routs :
+    / ['get']
+    /health ['get']
+    /database ['get']
+    /api/v1/ollama/status ['get']
+    /api/v1/ollama/models ['get']
+    /api/v1/ollama/generate ['post']
+    /api/v1/schema ['get']
+    /api/v1/sql/generate ['post']
+    /assistant/ask ['post']

@@ -28,6 +28,6 @@ api_router.include_router(
 
 api_router.include_router(
     assistant.router,
-    prefix="/assistant",
+    prefix="/api/v1/assistant",
     tags=["Assistant"]
 )

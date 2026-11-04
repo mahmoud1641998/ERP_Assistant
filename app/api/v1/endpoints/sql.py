@@ -1,3 +1,4 @@
+
 from fastapi import APIRouter, HTTPException
 
 from app.schemas.sql import (
@@ -32,10 +33,9 @@ def generate_sql(request: SQLGenerationRequest):
         validation_result = validate_sql_query(generated_sql)
 
         if not validation_result["valid"]:
-            return SQLGenerationResponse(
-                success=False,
-                question=request.question,
-                message=validation_result["message"]
+            raise HTTPException(
+                status_code=422,
+                detail=validation_result["message"]
             )
 
         # Step 3: Return validated SQL without execution
@@ -47,8 +47,13 @@ def generate_sql(request: SQLGenerationRequest):
             message="SQL generated and validated successfully."
         )
 
-    except Exception as e:
+    except HTTPException:
+        # Preserve HTTP errors raised intentionally
+        raise
+
+    except Exception:
+        # Handle unexpected errors
         raise HTTPException(
             status_code=500,
-            detail=f"SQL generation failed: {str(e)}"
+            detail="SQL generation failed."
         )

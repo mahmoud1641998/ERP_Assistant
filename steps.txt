@@ -35,3 +35,21 @@ initial schema  :
 ollama config for first calling qwen
 
 .env and db conn and core.config for validate data base conn 
+
+
+----
+
+FastAPI
+│
+├── /api/v1/schema
+│
+├── /api/v1/sql/generate
+│   ├── SQLGenerationService
+│   └── SQLValidationService
+│
+└── /api/v1/assistant/ask
+    └── SQLAssistantService
+        ├── SQLGenerationService
+        ├── SQLExecutionService
+        │   └── SQLValidationService
+        └── AnswerGenerationService

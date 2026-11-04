@@ -34,3 +34,4 @@ initial schema  :
 
 ollama config for first calling qwen
 
+.env and db conn and core.config for validate data base conn 

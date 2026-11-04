@@ -1,3 +1,4 @@
+
 from sqlalchemy.orm import Session
 
 from app.services.conversation_service import ConversationService
@@ -211,11 +212,16 @@ class ConversationAssistantService:
                 "answer": None
             }
 
-        # Step 7: Save assistant answer
+        # Step 7: Save assistant answer and executed SQL
+        assistant_content = (
+            f"ANSWER:\n{answer}\n\n"
+            f"EXECUTED SQL:\n{generated_sql}"
+        )
+
         self.save_assistant_message(
             db=db,
             conversation_id=conversation.id,
-            content=answer
+            content=assistant_content
         )
 
         # Step 8: Return final response

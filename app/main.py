@@ -1,5 +1,5 @@
-# firs - test
 from fastapi import FastAPI
+from app.api.v1.router import api_router
 
 app = FastAPI(
     title="ERP AI Assistant",
@@ -7,20 +7,4 @@ app = FastAPI(
     version="1.0.0"
 )
 
-
-@app.get("/")
-def root():
-    return {
-        "message": "Welcome to ERP AI Assistant",
-        "status": "running"
-    }
-
-
-@app.get("/health")
-def health_check():
-    return {
-        "status": "healthy",
-        "application": "ERP AI Assistant"
-    }
-
-# end of file
+app.include_router(api_router)

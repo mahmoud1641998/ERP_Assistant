@@ -1,16 +1,21 @@
 import ollama
 
+from app.core.config import settings
+
 
 class OllamaService:
 
     def __init__(self):
+
         self.client = ollama.Client(
-            host="http://localhost:11434"
+            host=settings.OLLAMA_BASE_URL,
+            timeout=settings.LLM_TIMEOUT
         )
 
     def check_connection(self):
+
         try:
-            response = self.client.list()
+            self.client.list()
 
             return {
                 "status": "connected",
@@ -18,18 +23,21 @@ class OllamaService:
             }
 
         except Exception as e:
+
             return {
                 "status": "disconnected",
                 "message": str(e)
             }
 
     def get_models(self):
+
         try:
             response = self.client.list()
 
             models = []
 
             for model in response.models:
+
                 models.append({
                     "name": model.model,
                     "size": model.size
@@ -38,30 +46,7 @@ class OllamaService:
             return models
 
         except Exception as e:
-            raise Exception(f"Failed to retrieve models: {str(e)}")
 
-    def generate_response(
-        self,
-        prompt: str,
-        model: str,
-        num_predict: int = 200
-    ):
-
-        try:
-            response = self.client.generate(
-                model=model,
-                prompt=prompt,
-                stream=False,
-                options={
-                    "num_predict": num_predict,
-                    "temperature": 0.1,
-                }
+            raise Exception(
+                f"Failed to retrieve models: {str(e)}"
             )
-
-            return {
-                "model": model,
-                "response": response.response
-            }
-
-        except Exception as e:
-            raise Exception(f"Generation failed: {str(e)}")

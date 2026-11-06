@@ -1,6 +1,9 @@
 from fastapi import APIRouter, HTTPException
+
 from app.services.ollama_service import OllamaService
 from app.schemas.ollama import GenerateRequest
+from app.llm.factory import LLMFactory
+
 
 router = APIRouter()
 
@@ -38,14 +41,16 @@ def get_ollama_models():
             detail=str(e)
         )
 
-## ollama generate endpoint
+
 @router.post("/ollama/generate")
 def generate_response(request: GenerateRequest):
 
     try:
-        result = ollama_service.generate_response(
-            prompt=request.prompt,
-            model=request.model
+
+        llm_provider = LLMFactory.get_provider()
+
+        result = llm_provider.generate_response(
+            prompt=request.prompt
         )
 
         return {
@@ -53,8 +58,8 @@ def generate_response(request: GenerateRequest):
             "data": result
         }
 
-    except Exception as e:
+    except Exception:
         raise HTTPException(
             status_code=500,
-            detail=str(e)
+            detail="AI generation failed."
         )

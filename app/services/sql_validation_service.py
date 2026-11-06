@@ -1,8 +1,17 @@
+
 import sqlglot
 from sqlglot import exp
 from sqlglot.optimizer.qualify import qualify
 
+from app.core.config import settings
 from app.services.schema_service import get_database_schema
+
+
+BLOCKED_FUNCTIONS = {
+    "SLEEP",
+    "BENCHMARK",
+    "LOAD_FILE"
+}
 
 
 def validate_sql_query(query: str) -> dict:
@@ -44,6 +53,36 @@ def validate_sql_query(query: str) -> dict:
                 "valid": False,
                 "message": "Locking queries are not allowed."
             }
+
+        # Block dangerous SQL functions
+        blocked_functions = {
+            function.this.upper()
+            for function in parsed_query.find_all(exp.Anonymous)
+            if isinstance(function.this, str)
+            and function.this.upper() in BLOCKED_FUNCTIONS
+        }
+
+        if blocked_functions:
+            return {
+                "valid": False,
+                "message": "Dangerous SQL functions are not allowed: "
+                + ", ".join(sorted(blocked_functions))
+            }
+
+        # Validate database and catalog references
+        for table in parsed_query.find_all(exp.Table):
+
+            if table.catalog:
+                return {
+                    "valid": False,
+                    "message": "Catalog-qualified table references are not allowed."
+                }
+
+            if table.db and table.db.lower() != settings.ERP_DB_NAME.lower():
+                return {
+                    "valid": False,
+                    "message": "Access to databases other than the ERP database is not allowed."
+                }
 
         # Get database schema
         database_schema = get_database_schema()
@@ -94,6 +133,7 @@ def validate_sql_query(query: str) -> dict:
             validate_qualify_columns=True,
             quote_identifiers=False
         )
+
         # Enforce maximum result limit
         MAX_ROWS = 100
 
@@ -116,6 +156,7 @@ def validate_sql_query(query: str) -> dict:
                     "valid": False,
                     "message": "Only numeric LIMIT values are allowed."
                 }
+
         return {
             "valid": True,
             "message": "SQL query is valid.",

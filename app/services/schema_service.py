@@ -1,10 +1,11 @@
+
 from sqlalchemy import inspect
 
-from app.core.database import engine
+from app.core.database import erp_engine
 
 
 def get_database_schema():
-    inspector = inspect(engine)
+    inspector = inspect(erp_engine)
 
     schema = {}
 

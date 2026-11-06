@@ -1,6 +1,7 @@
+
 from sqlalchemy import text
 
-from app.core.database import engine
+from app.core.database import erp_engine
 from app.services.sql_validation_service import validate_sql_query
 
 
@@ -24,7 +25,7 @@ class SQLExecutionService:
 
         try:
             # Step 3: Execute SQL
-            with engine.connect() as connection:
+            with erp_engine.connect() as connection:
 
                 result = connection.execute(
                     text(validated_sql)

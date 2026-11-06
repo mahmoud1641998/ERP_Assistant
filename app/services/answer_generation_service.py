@@ -1,12 +1,13 @@
+
 import json
 
-from app.services.ollama_service import OllamaService
+from app.llm.factory import LLMFactory
 
 
 class AnswerGenerationService:
 
     def __init__(self):
-        self.ollama_service = OllamaService()
+        self.llm_provider = LLMFactory.get_provider()
 
     def generate_answer(
         self,
@@ -37,6 +38,7 @@ QUERY RESULTS:
 {results_json}
 
 INSTRUCTIONS:
+
 1. Answer based only on the provided query results.
 2. Do not invent or assume any information.
 3. Include all important fields available in the query results.
@@ -51,10 +53,8 @@ INSTRUCTIONS:
 ANSWER:
 """
 
-        response = self.ollama_service.generate_response(
-            prompt=prompt,
-            model="qwen3:4b-instruct-2507-q4_K_M",
-            num_predict=500
+        response = self.llm_provider.generate_response(
+            prompt=prompt
         )
 
         return {

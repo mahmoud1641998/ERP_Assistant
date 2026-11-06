@@ -1,3 +1,4 @@
+import logging
 
 from fastapi import APIRouter, HTTPException
 
@@ -9,6 +10,8 @@ from app.schemas.sql import (
 from app.services.sql_generation_service import SQLGenerationService
 from app.services.sql_validation_service import validate_sql_query
 
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -22,7 +25,7 @@ sql_generation_service = SQLGenerationService()
 def generate_sql(request: SQLGenerationRequest):
 
     try:
-        # Step 1: Generate SQL using Ollama
+        # Step 1: Generate SQL using LLM Provider
         generation_result = sql_generation_service.generate_sql(
             request.question
         )
@@ -48,11 +51,11 @@ def generate_sql(request: SQLGenerationRequest):
         )
 
     except HTTPException:
-        # Preserve HTTP errors raised intentionally
         raise
 
     except Exception:
-        # Handle unexpected errors
+        logger.exception("Unexpected error in SQL generation endpoint")
+
         raise HTTPException(
             status_code=500,
             detail="SQL generation failed."
